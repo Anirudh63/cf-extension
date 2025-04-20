@@ -1,1 +1,1 @@
-#CF Unaccepted Problems in sorted difficulty
+CF Unaccepted Problems in sorted difficulty

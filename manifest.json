@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "CF Unaccepted Problems",
+    "version": "1.0",
+    "description": "List your Codeforces problems that you attempted but didn't solve.",
+    "permissions": ["storage"],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "icon.png"
+      }
+    },
+    "icons": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  }
+  
