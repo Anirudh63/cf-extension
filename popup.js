@@ -11,7 +11,7 @@ document.getElementById("fetchBtn").addEventListener("click", async () => {
     }
   
     try {
-      // Get all submissions of the user
+      // Fetch all submissions of the user
       const res = await fetch(`https://codeforces.com/api/user.status?handle=${handle}`);
       const data = await res.json();
   
@@ -21,18 +21,22 @@ document.getElementById("fetchBtn").addEventListener("click", async () => {
       }
   
       const submissions = data.result;
+      const solvedSet = new Set();
       const unsolvedMap = {};
   
-      // Process submissions
+      // First pass: mark solved problems
       for (let s of submissions) {
         const key = `${s.problem.contestId}-${s.problem.index}`;
-  
         if (s.verdict === "OK") {
-          delete unsolvedMap[key]; // Solved — remove it
-        } else {
-          if (!unsolvedMap[key]) {
-            unsolvedMap[key] = s.problem;
-          }
+          solvedSet.add(key);
+        }
+      }
+  
+      // Second pass: add only never-solved problems
+      for (let s of submissions) {
+        const key = `${s.problem.contestId}-${s.problem.index}`;
+        if (!solvedSet.has(key) && !unsolvedMap[key]) {
+          unsolvedMap[key] = s.problem;
         }
       }
   
@@ -57,13 +61,13 @@ document.getElementById("fetchBtn").addEventListener("click", async () => {
         return diffA - diffB;
       });
   
-      // Display
+      // Display the problems
       if (problems.length === 0) {
         statusDiv.textContent = "Congrats! No unsolved attempts.";
         return;
       }
   
-      statusDiv.textContent = `Found ${problems.length} problems`;
+      statusDiv.textContent = `Found ${problems.length} unsolved problems`;
   
       for (let prob of problems) {
         const link = `https://codeforces.com/contest/${prob.contestId}/problem/${prob.index}`;
