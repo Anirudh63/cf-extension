@@ -3,7 +3,7 @@
     "name": "CF Unaccepted Problems",
     "version": "1.0",
     "description": "List your Codeforces problems that you attempted but didn't solve.",
-    "permissions": ["storage"],
+    "permissions": ["storage", "scripting", "activeTab"],
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
@@ -14,6 +14,13 @@
       "16": "icon.png",
       "48": "icon.png",
       "128": "icon.png"
-    }
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://codeforces.com/*"],
+        "js": ["content.js"],
+        "run_at": "document_idle"
+      }
+    ]
   }
   

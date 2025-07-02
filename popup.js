@@ -83,3 +83,21 @@ document.getElementById("fetchBtn").addEventListener("click", async () => {
     }
   });
   
+// Try to auto-detect username from content script
+window.addEventListener('DOMContentLoaded', () => {
+  // Only try if the popup is opened on a codeforces.com tab
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    const tab = tabs[0];
+    if (tab && tab.url && tab.url.includes('codeforces.com')) {
+      chrome.tabs.sendMessage(tab.id, {type: 'GET_CF_USERNAME'}, (response) => {
+        if (response && response.username) {
+          const handleInput = document.getElementById('handle');
+          handleInput.value = response.username;
+          // Optionally, trigger fetch automatically
+          document.getElementById('fetchBtn').click();
+        }
+      });
+    }
+  });
+});
+  
